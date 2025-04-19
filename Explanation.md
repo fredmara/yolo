@@ -96,7 +96,7 @@ This setup ensures that your database remains functional, even if the container 
 
 ---
 
-## DockerHub Screen Shot
+## DockerHub Screenshot
 ![DockerHub screenshot of the basic microservices app images](./images/dockerhubrepo.png)
 ```
 
