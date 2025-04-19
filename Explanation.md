@@ -93,3 +93,10 @@ This setup ensures that your database remains functional, even if the container 
 - Tested the application locally using Docker Compose, verifying that microservices were properly networked.
 - Debugged MongoDB connection issues, ensuring database functionality and persistence.
 ```
+
+---
+
+## DockerHub Screen Shot
+![DockerHub screenshot of the basic microservices app images](./images/dockerhubrepo.png)
+```
+

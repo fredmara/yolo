@@ -1,5 +1,5 @@
 # Use an official Node runtime as a parent image
-FROM node:14 AS build
+FROM node:23-slim AS build
 
 
 # Set the working directory in the container
@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 
 #Add multi-stage build
-FROM alpine:3.16.7
+FROM alpine:3.21.3
 
 
 WORKDIR /app
