@@ -104,3 +104,7 @@ Ensure the following are installed on your system:
 - Step-by-step setup for easy replication in any environment.
 
 ---
+## DockerHub Screenshot
+![DockerHub screenshot of the basic microservices app images](./images/dockerhubrepo.png)
+
+---
