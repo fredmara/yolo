@@ -3,8 +3,7 @@
   hosts: all
   become: true
   roles:
-    - system_config    # Sets up the environment and clones the repository
-    - docker_setup     # Ensures Docker is installed and configured
+  
     - mongo_setup      # Deploys the MongoDB container
     - backend_setup    # Deploys the backend container
     - client_setup   # Deploys the frontend container
