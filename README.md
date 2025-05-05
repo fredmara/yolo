@@ -25,16 +25,27 @@ Yolo ecommerce-ansible/
 │ └── frontend/
 
 ├── stage_two/
+
 │ ├── terraform/
+
 │ │ ├── main.tf
+
 │ │ ├── variables.tf
+
 │ │ ├── outputs.tf
+
 │ │ └── inventory.ini
+
 │ └── ansible/
+
 │ ├── playbook.yml
+
 │ └── roles/
+
 ├── explanation.md
+
 └── README.md
+
 
 ## Stage 1: Ansible Configuration with Vagrant
 
