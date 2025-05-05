@@ -70,9 +70,15 @@ Vagrant.configure("2") do |config|
   # Provisioning configuration for Ansible.
   config.vm.network "private_network", type: "dhcp"
 
-  config.vm.provision "shell", inline: "apt-get update"
+  config.vm.network "forwarded_port", guest: 3000, host: 3000 
 
-  config.vm.network "forwarded_port", guest: 3000, host: 3000  
+  config.vm.hostname = "Yolo-Ecommerce App"
+  
+  config.vm.provision "shell", inline: <<-SHELL
+  sudo apt-get update
+  sudo apt-get install -y python3 python3-pip
+  SHELL
+end
 
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "2048"
