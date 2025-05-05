@@ -2,18 +2,28 @@
 
 This project automates the deployment of a containerized e-commerce platform using **Ansible** and **Terraform**. The application features a client, backend, and MongoDB database, all running in Docker containers.
 
-## 🚀 Project Structure
+## Project Structure
 
 Yolo ecommerce-ansible/
+
 ├── Vagrantfile
+
 ├── inventory
+
 ├── playbook.yml
+
 ├── vars/
+
 │ └── main.yml
+
 ├── roles/
+
 │ ├── mongodb/
+
 │ ├── backend/
+
 │ └── frontend/
+
 ├── stage_two/
 │ ├── terraform/
 │ │ ├── main.tf
