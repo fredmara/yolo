@@ -68,9 +68,19 @@ Vagrant.configure("2") do |config|
   #   apt-get install -y apache2
   # SHELL
   # Provisioning configuration for Ansible.
-config.vm.provision "shell", inline: "apt-get update"
-config.vm.provision "ansible" do |ansible| 
-  ansible.playbook = "playbook.yml"
-config.vm.network "forwarded_port", guest: 3000, host: 3000  
+  config.vm.network "private_network", type: "dhcp"
+
+  config.vm.provision "shell", inline: "apt-get update"
+
+  config.vm.network "forwarded_port", guest: 3000, host: 3000  
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+    vb.cpus = "2"
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "playbook.yml"
+    ansible.verbose = "v"
   end
 end
