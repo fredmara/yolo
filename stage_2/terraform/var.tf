@@ -1,3 +1,3 @@
 variable "vm_name" {
-  default = "ecommerce-vm"
+  default = "yolo-ecommerce-vm"
 }
