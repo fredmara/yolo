@@ -1,5 +1,5 @@
 ---
-- name: Run backend container
+- name: Pull image from Pull image from repository
   docker_image:
     name: fowino/yolo-backend:v1.0.5
     source: pull
