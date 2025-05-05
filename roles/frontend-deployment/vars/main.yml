@@ -1,0 +1,3 @@
+container_name: yolo-client
+network: app-net
+volume: app-mongo-data/app
