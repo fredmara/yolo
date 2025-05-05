@@ -1,9 +1,10 @@
 ---
-- name: Ansible playbook to dockerize and run yolo e-commerce app using ansible
+- name: Ansible playbook for yolo-ecommerce site
   hosts: all
   become: true
-  roles: 
-    - frontend-deployment
-    - setup-mongodb   
-    - backend-deployment
-    
+  roles:
+    - system_config    # Sets up the environment and clones the repository
+    - docker_setup     # Ensures Docker is installed and configured
+    - mongo_setup      # Deploys the MongoDB container
+    - backend_setup    # Deploys the backend container
+    - frontend_setup   # Deploys the frontend container
