@@ -42,7 +42,7 @@ The playbook executes MongoDB first, followed by backend, then client. This orde
 
 mongo_port: 27017
 backend_port: 5000
-frontend_port: 3000
+client_port: 3000
 - Defined once and reused across roles for flexibility and maintainability.
 
 # Terraform Integration
