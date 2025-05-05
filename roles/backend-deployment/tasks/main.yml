@@ -1,5 +1,5 @@
 ---
-- name: Pull image from repository
+- name: Run backend container
   docker_image:
     name: fowino/yolo-backend:v1.0.5
     source: pull
@@ -12,5 +12,11 @@
       - name: app-net
     ports:
       - "5000:5000"
+    volumes:
+      - /home/vagrant/app/backend:/usr/src/app
+    working_dir: /usr/src/app
     command: "npm start"
   become: yes
+
+
+
