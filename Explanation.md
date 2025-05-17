@@ -1,84 +1,75 @@
-# Explanation of Ansible Playbook Structure
+1. Choice of Kubernetes Objects Used for Deployment
+    For the deployment of this application, I used the following Kubernetes objects:
 
-This document explains the rationale and structure of the Ansible and Terraform automation scripts used to deploy the containerized e-commerce application.
+      Frontend and Backend Deployments: I used Deployments to manage these services. This allows for easy scaling, rolling updates, high availability through replica sets and self-healing by replacing failed pods.
 
-## Order of Execution: `playbook.yml`
+      MongoDB Database: I used a StatefulSet instead of a Deployment because databases typically require:
 
-```yaml
-- hosts: all
-  become: true
-  vars_files:
-    - vars/main.yml
+        1. Stable persistent storage/volume binding - ensure each pod keeps its data
 
-  roles:
-    - { role: mongodb, tags: mongo }
-    - { role: backend, tags: backend }
-    - { role: client, tags: client }
-The playbook executes MongoDB first, followed by backend, then client. This order ensures dependencies (like the database) are available before application layers interact with them.
+        2. Stable network identity
 
-## Role Descriptions
-1. mongodb/
-- Installs Docker (if not already)
+        3. Ordered, graceful deployment and scaling which is ideal for stateful applications
 
-- Creates a Docker container running MongoDB on default port 27017
+The StatefulSet was paired with a PersistentVolumeClaim to ensure data is retained even if pods are restarted or rescheduled.
 
-- Sets volume mount for data persistence
+This approach aligns with best practices for managing stateful workloads on Kubernetes.
 
-2. backend/
-- Pulls the Node.js image
+2. Method Used to Expose Pods to Internet Traffic
+  To expose the application to internet traffic: 
+    I used a LoadBalancer service type for the frontend pod. This provisioned an external IP address via GKE, which can be accessed publicly. e.g (type: LoadBalancer)
 
-- Mounts the backend code cloned from GitHub
+    The backend and database services were exposed internally using ClusterIP, as they are not meant to be accessed directly from the internet.
 
-- Installs dependencies and runs the backend server on port 5000
+3. Use (or Lack) of Persistent Storage
+  I implemented persistent storage for the MongoDB database:
 
-- Connects to the MongoDB container internally
+    Used a PersistentVolumeClaim (PVC) to create and mount storage to the database pod in the StatefulSet. This ensures that the data remains intact even if the pod is deleted or restarted.
+    The persistent volume is:
+      1. Dynamically provisioned on GKE
+      2. Bound to a specific MongoDB pod identity (mongo-0)
+      3. Mounted at /data/db inside the MongoDB container.
+    This architecture ensures data durability, isolation and scalability for the database layer.
 
-3. client/
-- Builds and runs the frontend React application
+No persistent storage was required for the frontend or backend as they are stateless and retrieve data via the backend.
 
-- Exposes it on port 3000
+4. Git Workflow Used
+  The Git workflow used included: 
+    1. Working on the main branch for simplicity during this small project.
+    2. Commits were made frequently with descriptive messages, such as Add StatefulSet for database, Fix LoadBalancer service, and Update Docker image tags.
+    3. Project structure and version control were maintained with .gitignore to exclude unnecessary files.
 
-## Variables (vars/main.yml)
+For team collaboration or CI/CD projects, I typically use Git Flow with main, dev, and feature branches.
 
-mongo_port: 27017
-backend_port: 5000
-client_port: 3000
-- Defined once and reused across roles for flexibility and maintainability.
+5. Live Application & Debugging
+  The application was successfully deployed on Google Kubernetes Engine. It is accessible via the following external IP:
 
-# Terraform Integration
-## Terraform Setup
-- Generates an Ansible inventory file automatically
+    Live URL: (http://35.184.247.235:3000/)
 
-- Uses local-exec to run Ansible playbook after provisioning
+      If any part of the deployment failed, I used the following debugging methods:
 
-- Simplifies deployment into a single command (terraform apply)
+      kubectl logs [pod-name] to check application logs
 
-### NB.
-To ensure data privacy, the Terraform state file is pushed to GitHub without sensitive variables or backup state files to prevent leakage.
+      kubectl describe pod [pod-name] for lifecycle events
 
-## Testing Criteria
-- The app launches in the browser after provisioning
+      kubectl get all to monitor resources and statuses
 
-- The "Add Product" form works and persists data
+These tools helped identify issues such as container image pull errors and service misconfigurations.
 
-- Docker containers are created and running
+6. Best Practices Followed
+  Docker Image Tags: All images were tagged following the format:
 
-- Playbook can be re-run without repeatition.
+    docker.io/fowino/yolo-client:v1.0.5
+    docker.io/fowino/yolo-backend:v1.0.5
 
-## Tags & Blocks
-Tags were added to each role:
+The deployment uses a robust and scalable architecture leveraging Kubernetes best practices:
 
-tags: mongo, backend, client.
-This allows partial playbook runs using:
+  - Stateless services (frontend/backend) managed with Deployments
 
-ansible-playbook playbook.yml --tags "backend"
+  - Stateful database with StatefulSet and PVC
 
-In Summary
-This automation project demonstrates:
+  - Secure exposure through service types
 
-1. Practical use of Ansible roles
-2. Variable-driven configuration
-3. Modular provisioning using Terraform and Ansible
-4. Real-world container orchestration
+  - Persistent storage to ensure data reliability
 
-This architecture is scalable, repeatable, and suitable for CI/CD or team workflows.
+This setup demonstrates a real-world cloud-native architecture and is ready for further scalability, monitoring, and CI/CD integration.
