@@ -1,84 +1,96 @@
-# Yolo E-Commerce Platform Automation with Ansible & Terraform
+Yolo E-commerce — Kubernetes Deployment on GKE
+    Yolo is a containerized multi-tier application demonstrating the use of Docker, Kubernetes, and Google Kubernetes Engine (GKE) for orchestration and scaling. This project has been built as part of the Week 5 Independent Project for the Kubernetes module.
 
-This project automates the deployment of a containerized e-commerce platform using **Ansible** and **Terraform**. The application features a client, backend, and MongoDB database, all running in Docker containers.
+Live Deployment
+live App URL: (http://35.184.247.235:3000/)
 
-## Project Structure
+Tech Stack
+    - Frontend: HTML/CSS/JavaScript (served via Node.js Express)
 
-Yolo ecommerce-ansible/
+    - Backend: Node.js
 
-├── Vagrantfile
+    - Database: MongoDB
 
-├── inventory
+    - Containerization: Docker
 
-├── playbook.yml
+    - Orchestration: Kubernetes (GKE)
 
-├── vars/
+    - CI/CD: Git & GitHub
 
-│ └── main.yml
+Project Structure
 
-├── roles/
+yolo/
+├── backend/
+│   ├── Dockerfile
+│   └── index.js
+├── client/
+│   ├── Dockerfile
+│   └── index.html
+├── manifests/
+│   ├── backend-deployment.yaml
+│   ├── backend-service.yaml
+│   ├── frontend-deployment.yaml
+│   ├── frontend-service.yaml
+│   ├── mongo-statefulset.yaml
+│   ├── mongo-service.yaml
+│   └── mongo-pvc.yaml
+├── .gitignore
+├── README.md
+└── explanation.md
+Kubernetes Components
+    1. Frontend
+        Containerized with Docker and deployed using a Kubernetes Deployment.
 
-│ ├── mongodb/
+        Exposed to the internet using a LoadBalancer Service.
 
-│ ├── backend/
+        Image: fowino/yolo-client:v1.0.5
 
-│ └── frontend/
+    2. Backend
+        Node.js API containerized and deployed via a Deployment.
 
-├── stage_two/
+        Exposed internally via a ClusterIP service.
 
-│ ├── terraform/
+        Image: fowino/yolo-backend:v1.0.5
 
-│ │ ├── main.tf
+    3. Database
+        MongoDB deployed as a StatefulSet to preserve identity and data.
 
-│ │ ├── variables.tf
+        Storage provided via a PersistentVolumeClaim (PVC).
 
-│ │ ├── outputs.tf
+        Internal-only access via a ClusterIP service.
 
-│ │ └── inventory.ini
+    4. Deploy on GKE
+        Authenticate and create GKE cluster:
 
-│ └── ansible/
+            gcloud auth login
+            gcloud config set project <your-gcp-project-id>
+            gcloud container clusters create yolo-cluster --zone <your-zone>
+            gcloud container clusters get-credentials yolo-cluster --zone <your-zone>
+    5. Deploy all manifests:
+            kubectl apply -f manifests/
+    6. Get frontend external IP:
+            kubectl get svc
 
-│ ├── playbook.yml
+Docker Images
+    Frontend: fowino/yolo-client:v1.0.5
 
-│ └── roles/
+    Backend: fowino/yolo-backend:v1.0.5
 
-├── explanation.md
+Tagging follows the convention:
+    
+    docker.io/fowino/<component>:v1.0.5
 
-└── README.md
+Related Docs
+Explanation.md: Technical and architectural rationale.
 
+👤 Author
+Fredrick Owino
+GitHub: @fredmara
+  
 
-## Stage 1: Ansible Configuration with Vagrant
-
-1. `vagrant up` - Provisions an Ubuntu VM using the Jeff Geerling base image.
-2. `ansible-playbook -i inventory playbook.yml` - Installs Docker, clones the app, and runs it in containers.
-
-### Key Features
-- Uses roles for **MongoDB**, **backend**, and **client**
-- Role-based separation of concerns
-- Docker-based container orchestration
-- GitHub code cloning
-- Fully automated provisioning and setup
-
-## Test the Application
-
-Once the playbook finishes:
-- Visit `http://localhost:3000` to access the client.
-- Use the "Add Product" form to verify full stack functionality.
-
-## Stage 2: Terraform + Ansible
-
-In `stage_two/`, we integrate Terraform to provision infrastructure and trigger Ansible:
-
-```bash
-cd stage_two/terraform
-terraform init
-terraform apply
-Terraform provisions a VM or local environment, generates an Ansible inventory, and runs the same role-based setup.
-
-# Terraform provisions a VM or local environment, generates an Ansible inventory, and runs the same role-based setup.
-
-## Deliverables
-Vagrantfile (Stage 1)
-Terraform scripts (Stage 2)
-Ansible roles & playbook
-Working app with persistence
+  
+✅Status
+✔️ Project deployed to GKE
+🛡️ Stateful database with persistent storage
+📦 Docker images pushed to Docker Hub
+📎 See above for deployment IP and live URL
