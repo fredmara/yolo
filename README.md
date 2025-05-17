@@ -121,7 +121,6 @@ Related Docs
 Explanation.md: Technical and architectural rationale to understand the project structure.
 
 
-👤 Author
+Author: Fredrick Owino
 
-Fredrick Owino
 GitHub: @fredmara
