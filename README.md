@@ -118,20 +118,10 @@ Tagging follows the convention:
 
 Related Docs
 
-Explanation.md: Technical and architectural rationale.
+Explanation.md: Technical and architectural rationale to understand the project structure.
+
 
 👤 Author
 
 Fredrick Owino
-
 GitHub: @fredmara
-
-✅ Status
-
-✔️ Project deployed to GKE
-
-🛡️ Stateful database with persistent storage
-
-📦 Docker images pushed to Docker Hub
-
-📎 See above for deployment IP and live URL
