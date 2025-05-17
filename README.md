@@ -1,5 +1,8 @@
 Yolo E-commerce — Kubernetes Deployment on GKE
-    Yolo is a containerized multi-tier application demonstrating the use of Docker, Kubernetes, and Google Kubernetes Engine (GKE) for orchestration and scaling. This project has been built as part of the Week 5 Independent Project for the Kubernetes module.
+
+    Yolo is a containerized multi-tier application demonstrating the use of Docker, Kubernetes, and Google Kubernetes Engine (GKE) for orchestration and scaling. 
+    
+    This project has been built as part of the Week 5 Independent Project for the Kubernetes module.
 
 Live Deployment
 live App URL: (http://35.184.247.235:3000/)
@@ -88,7 +91,7 @@ Fredrick Owino
 GitHub: @fredmara
   
 
-  
+
 ✅Status
 ✔️ Project deployed to GKE
 🛡️ Stateful database with persistent storage
