@@ -1,11 +1,3 @@
-# ---------------------------------------------------------
-# feat: Add Kubernetes Services for backend, frontend & MongoDB
-#
-# - Ensures stable networking between microservices
-# - Exposes backend & frontend to the cluster
-# - Implements headless service for MongoDB discovery
-# ---------------------------------------------------------
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -15,9 +7,9 @@ spec:
     app: backend
   ports:
     - protocol: TCP
-      port: 5000  # Cluster-internal port
-      targetPort: 5000  # Matches container's port
-  type: LoadBalancer  # Allows external access to backend
+      port: 5000  
+      targetPort: 5000  
+  type: LoadBalancer  
 
 ---
 apiVersion: v1
@@ -29,9 +21,9 @@ spec:
     app: frontend
   ports:
     - protocol: TCP
-      port: 3000  # Exposes frontend app
+      port: 3000  
       targetPort: 3000
-  type: LoadBalancer  # Allows external access to the frontend UI
+  type: LoadBalancer  
 
 ---
 apiVersion: v1
@@ -45,4 +37,4 @@ spec:
     - protocol: TCP
       port: 27017
       targetPort: 27017
-  clusterIP: None  # Headless Service for MongoDB StatefulSet
+  clusterIP: None 

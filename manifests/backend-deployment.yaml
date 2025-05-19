@@ -1,18 +1,9 @@
-# ---------------------------------------------------------
-# feat: Add Kubernetes backend deployment manifest
-# 
-# - Define backend deployment with one replica for efficiency
-# - Set MongoDB connection string to reference Kubernetes service
-# - Configure resource limits to stay within Free Tier constraints
-# - Ensure proper container port exposure for backend services
-# ---------------------------------------------------------
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 1  # We’re keeping it minimal for Free Tier
+  replicas: 1  
   selector:
     matchLabels:
       app: backend
@@ -28,11 +19,11 @@ spec:
             - containerPort: 5000
           envFrom:
             - secretRef:
-                name: mongodb-secret  # Inject MongoDB URI securely
+                name: mongodb-secret  
           resources:
             limits:
-              cpu: "100m"  # 
-              memory: "128Mi"  # Keep memory usage within Free Tier
+              cpu: "100m"  
+              memory: "128Mi"  
             requests:
               cpu: "100m"
               memory: "128Mi"
